@@ -44,11 +44,13 @@ class pentaho ($pentaho_home = '/srv/pentaho') {
     ensure  => 'directory'
   }
 
-  archive { 'biserver-ce-5.3.0.0-213':
+  $biserver_download = 'biserver-ce-5.3.0.0-213'
+
+  archive { $biserver_download:
     ensure => present,
     extension => 'zip',
     digest_type => 'sha1',
-    url    => 'http://arquivos.interlegis.leg.br/interlegis/produtos/pentaho/biserver-ce-5.3.0.0-213.zip',
+    url    => "http://arquivos.interlegis.leg.br/interlegis/produtos/pentaho/${biserver_download}.zip",
     target => $pentaho_home,
     follow_redirects => true,
     require => [
@@ -58,20 +60,25 @@ class pentaho ($pentaho_home = '/srv/pentaho') {
 
   ### UPSTART ###
 
-  $upstart_content = "#!upstart
-# Pentaho upstart script
-
-start on runlevel [2345]
-stop on runlevel [!2345]
-
-respawn
-respawn limit 10 30
-
-exec ${pentaho_home}/upstart_biserver_wrapper.sh
-"
-
   file { '/etc/init/pentaho.conf':
-    content => $upstart_content,
+    content => template('pentaho/pentaho.conf.erb'),
+  }
+
+  file { 'upstart_biserver_wrapper.sh':
+    path => "${pentaho_home}/upstart_biserver_wrapper.sh",
+    content => template('pentaho/upstart_biserver_wrapper.sh.erb'),
+    mode => '+x',
+    require => File[$pentaho_home],
+  }
+
+  service { 'pentaho':
+    ensure => running,
+    provider => 'upstart',
+    require => [
+      Package['oracle-java7-installer'],
+      Archive[$biserver_download],
+      File['/etc/init/pentaho.conf'],
+      File['upstart_biserver_wrapper.sh']],
   }
 
 }

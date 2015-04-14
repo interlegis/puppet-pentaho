@@ -1,7 +1,7 @@
 #!/bin/bash
 # Based on http://serverfault.com/questions/425132/controlling-tomcat-with-supervisor
 
-BISERVER_HOME=/srv/pentaho/biserver-ce
+BISERVER_HOME=<%= @biserver_home %>
 
 export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 export _PENTAHO_JAVA_HOME=$JAVA_HOME
@@ -16,7 +16,9 @@ rm -rf $BISERVER_HOME/pentaho-solutions/system/osgi/cache/*
 # cleanup temp directory
 rm -rf $CATALINA_HOME/temp/*
 
-. $CATALINA_HOME/bin/catalina.sh start
+# this cd is necessary for some reason
+cd $CATALINA_HOME/bin
+. ./catalina.sh start
 
 function shutdown()
 {
@@ -26,4 +28,4 @@ function shutdown()
 # Allow any signal which would kill a process to stop Tomcat
 trap shutdown HUP INT QUIT ABRT KILL ALRM TERM TSTP
 
-wait $(cat $CATALINA_PID) 
+wait $(cat $CATALINA_PID)
