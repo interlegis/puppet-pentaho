@@ -1,0 +1,14 @@
+{
+  "name": "pentaho",
+  "version": "0.1.0",
+  "author": "Interlegis",
+  "license": "GPL-2.0",
+  "summary": "Module for a simple pentaho BA Server installation on Ubuntu managed by upstart",
+  "source": "https://github.com/interlegis/puppet-pentaho",
+  "project_page": "https://github.com/interlegis/puppet-pentaho",
+  "tags": ["pentaho", "BA Server", "BI"],
+  "dependencies": [
+    { "name": "puppetlabs/apt", "version_requirement": ">= 1.8.0" },
+    { "name": "camptocamp/archive", "version_requirement": ">= 0.5.1" },
+  ]
+}
