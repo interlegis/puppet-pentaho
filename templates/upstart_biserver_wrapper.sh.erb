@@ -8,7 +8,7 @@ export _PENTAHO_JAVA_HOME=$JAVA_HOME
 export _PENTAHO_JAVA=$_PENTAHO_JAVA_HOME/bin/java
 
 export CATALINA_HOME=$BISERVER_HOME/tomcat
-export CATALINA_OPTS="-Djava.awt.headless=true -Xms1024m -Xmx2048m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000"
+export CATALINA_OPTS="-Dfile.encoding=UTF-8 -Djava.awt.headless=true -Xms1024m -Xmx2048m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000"
 export CATALINA_PID=/var/run/catalina_pentaho.pid
 
 # cleanup osgi cache to avoid strange exceptions (see http://stackoverflow.com/a/29368413)
